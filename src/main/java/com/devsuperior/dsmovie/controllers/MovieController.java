@@ -4,6 +4,7 @@ import java.net.URI;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -71,6 +72,7 @@ public class MovieController {
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(produces = "application/json")
+	@SecurityRequirement(name = "bearerAuth")
 	public ResponseEntity<MovieDTO> insert(@Valid @RequestBody MovieDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
@@ -91,6 +93,7 @@ public class MovieController {
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{id}", produces = "application/json")
+	@SecurityRequirement(name = "bearerAuth")
 	public ResponseEntity<MovieDTO> update(@PathVariable Long id, @Valid @RequestBody MovieDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
@@ -110,6 +113,7 @@ public class MovieController {
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{id}", produces = "application/json")
+	@SecurityRequirement(name = "bearerAuth")
 	public ResponseEntity<MovieDTO> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
